@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-
-import 'package:flutter_carros/pages/widgets/app_button.dart';
-import 'package:flutter_carros/pages/widgets/app_text.dart';
+import 'package:flutter_carros/widgets/app_button.dart';
+import 'package:flutter_carros/widgets/app_text.dart';
 
 class LoginPage extends StatefulWidget {
   @override
