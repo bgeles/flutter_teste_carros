@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_carros/pages/home_page.dart';
+import 'package:flutter_carros/utils/nav.dart';
 import 'package:flutter_carros/widgets/app_button.dart';
 import 'package:flutter_carros/widgets/app_text.dart';
 
@@ -104,6 +106,8 @@ class _LoginPageState extends State<LoginPage> {
     String senha = _tSenha.text;
 
     print(formOK);
+
+    push(context, HomePage());
   }
 
   @override
