@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_carros/pages/api_response.dart';
 import 'package:flutter_carros/pages/home_page.dart';
+import 'package:flutter_carros/pages/login_api.dart';
+import 'package:flutter_carros/pages/usuario.dart';
 import 'package:flutter_carros/utils/nav.dart';
 import 'package:flutter_carros/widgets/app_button.dart';
 import 'package:flutter_carros/widgets/app_text.dart';
@@ -89,13 +92,13 @@ class _LoginPageState extends State<LoginPage> {
     if (text.isEmpty) {
       return "Digite a Senha";
     }
-    if (text.length < 5) {
-      return "Senha precisa ser maior do que 4 dígitos";
+    if (text.length < 2) {
+      return "Senha precisa ser maior do que 2 dígitos";
     }
     return null;
   }
 
-  void _onClickLogin() {
+  void _onClickLogin() async {
     bool formOK = _formKey.currentState.validate();
 
     if (!formOK) {
@@ -107,7 +110,17 @@ class _LoginPageState extends State<LoginPage> {
 
     print(formOK);
 
-    push(context, HomePage());
+    ApiResponse response = await LoginApi.login(login, senha);
+
+    if (response.ok) {
+      Usuario user = response.result;
+
+      print(">>>>> $user");
+
+      push(context, HomePage());
+    } else {
+      print(response.msg);
+    }
   }
 
   @override
