@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_carros/pages/api_response.dart';
-import 'package:flutter_carros/pages/home_page.dart';
-import 'package:flutter_carros/pages/login_api.dart';
-import 'package:flutter_carros/pages/usuario.dart';
+import 'package:flutter_carros/pages/carro/home_page.dart';
+import 'package:flutter_carros/pages/login/login_api.dart';
+import 'package:flutter_carros/pages/login/usuario.dart';
+import 'package:flutter_carros/utils/alert.dart';
 import 'package:flutter_carros/utils/nav.dart';
 import 'package:flutter_carros/widgets/app_button.dart';
 import 'package:flutter_carros/widgets/app_text.dart';
@@ -15,6 +16,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool _showProgress = false;
+
   final _formKey = GlobalKey<FormState>();
 
   final _tlogin = TextEditingController();
@@ -74,7 +77,11 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 20,
             ),
-            AppButton("Login", onPressed: _onClickLogin),
+            AppButton(
+              "Login",
+              onPressed: _onClickLogin,
+              showProgress: _showProgress,
+            ),
           ],
         ),
       ),
@@ -110,6 +117,10 @@ class _LoginPageState extends State<LoginPage> {
 
     print(formOK);
 
+    setState(() {
+      _showProgress = true;
+    });
+
     ApiResponse response = await LoginApi.login(login, senha);
 
     if (response.ok) {
@@ -117,10 +128,15 @@ class _LoginPageState extends State<LoginPage> {
 
       print(">>>>> $user");
 
-      push(context, HomePage());
+      push(context, HomePage(), replace: true);
     } else {
+      alert(context, response.msg);
       print(response.msg);
     }
+
+    setState(() {
+      _showProgress = false;
+    });
   }
 
   @override

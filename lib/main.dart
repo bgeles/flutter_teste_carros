@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_carros/pages/login_page.dart';
+import 'package:flutter_carros/pages/login/login_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -9,10 +9,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        brightness: Brightness.light,
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.white
-      ),
+          brightness: Brightness.light,
+          primarySwatch: Colors.blue,
+          scaffoldBackgroundColor: Colors.white),
       home: LoginPage(),
     );
   }
