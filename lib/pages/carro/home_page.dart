@@ -1,9 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_carros/drawer_list.dart';
-import 'package:flutter_carros/pages/carro/carro.dart';
 import 'package:flutter_carros/pages/carro/carros_api.dart';
+import 'package:flutter_carros/pages/carro/carros_listview.dart';
+import 'package:flutter_carros/utils/pref.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin<HomePage> {
+  TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _initTabs();
+  }
+
+  _initTabs() async {
+    _tabController = TabController(length: 3, vsync: this);
+
+    int tabIdx = await Prefs.getInt("tabIdx");
+
+    setState(() {
+      _tabController.index = tabIdx;
+    });
+
+    _tabController.addListener(() {
+      Prefs.setInt("tabIdx", _tabController.index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,96 +41,32 @@ class HomePage extends StatelessWidget {
         title: Text(
           "Carros",
         ),
-      ),
-      body: _body(),
-      drawer: DrawerList(),
-    );
-  }
-
-  _body() {
-    Future<List<Carro>> carros = CarrosApi.getCarros();
-    return FutureBuilder(
-        future: carros,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasError) {
-            print(snapshot.error);
-            return Center(
-              child: Text(
-                "Não foi possível buscar os carros",
-                style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 22,
-                ),
-              ),
-            );
-          }
-
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          List<Carro> carros = snapshot.data;
-          return _listView(carros);
-        });
-  }
-
-  Container _listView(List<Carro> carros) {
-    return Container(
-      padding: EdgeInsets.all(16),
-      child: ListView.builder(
-        itemCount: carros != null ? carros.length : 0,
-        itemBuilder: (
-          context,
-          index,
-        ) {
-          Carro c = carros[index];
-
-          return Card(
-            color: Colors.grey[100],
-            child: Container(
-              padding: EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Center(
-                    child: Image.network(
-                      c.urlFoto ??
-                          "http://www.livroandroid.com.br/livro/carros/classicos/Chevrolet_BelAir.png",
-                      width: 200,
-                    ),
+        bottom: _tabController == null
+            ? null
+            : TabBar(
+                controller: _tabController,
+                tabs: <Widget>[
+                  Tab(
+                    text: "Clássicos",
                   ),
-                  Text(
-                    c.nome ?? "VAZIO",
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 25),
+                  Tab(
+                    text: "Esportivos",
                   ),
-                  Text(
-                    "descricao ...",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  ButtonTheme(
-                    child: ButtonBar(
-                      children: <Widget>[
-                        FlatButton(
-                          child: const Text('DETALHES'),
-                          onPressed: () {},
-                        ),
-                        FlatButton(
-                          child: const Text('SHARE'),
-                          onPressed: () {},
-                        ),
-                      ],
-                    ),
-                  ),
+                  Tab(
+                    text: "Luxo",
+                  )
                 ],
               ),
-            ),
-          );
-        },
       ),
+      body: TabBarView(
+        controller: _tabController,
+        children: <Widget>[
+          CarrosListView(TipoCarro.classicos),
+          CarrosListView(TipoCarro.esportivos),
+          CarrosListView(TipoCarro.luxo),
+        ],
+      ),
+      drawer: DrawerList(),
     );
   }
 }
