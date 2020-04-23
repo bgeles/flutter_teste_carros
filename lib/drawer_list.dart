@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_carros/pages/login/login_page.dart';
 import 'package:flutter_carros/utils/nav.dart';
 
+import 'pages/login/usuario.dart';
+
 class DrawerList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Usuario user;
+
     return SafeArea(
       child: Drawer(
         child: ListView(
