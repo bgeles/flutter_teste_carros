@@ -58,14 +58,16 @@ class _HomePageState extends State<HomePage>
                 ],
               ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: <Widget>[
-          CarrosListView(TipoCarro.classicos),
-          CarrosListView(TipoCarro.esportivos),
-          CarrosListView(TipoCarro.luxo),
-        ],
-      ),
+      body: _tabController == null
+          ? Center(child: CircularProgressIndicator())
+          : TabBarView(
+              controller: _tabController,
+              children: <Widget>[
+                CarrosListView(TipoCarro.classicos),
+                CarrosListView(TipoCarro.esportivos),
+                CarrosListView(TipoCarro.luxo),
+              ],
+            ),
       drawer: DrawerList(),
     );
   }
