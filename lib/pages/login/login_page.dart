@@ -10,6 +10,8 @@ import 'package:flutter_carros/utils/nav.dart';
 import 'package:flutter_carros/widgets/app_button.dart';
 import 'package:flutter_carros/widgets/app_text.dart';
 
+import '../carro/home_page.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -29,6 +31,17 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+
+    Future<Usuario> future = Usuario.get();
+    future.then((Usuario user) {
+      setState(
+        () {
+          if (user != null) {
+            push(context, HomePage(), replace: true);
+          }
+        },
+      );
+    });
   }
 
   @override
