@@ -7,18 +7,18 @@ import 'pages/login/usuario.dart';
 class DrawerList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Usuario user;
+    Future<Usuario> future = Usuario.get();
 
     return SafeArea(
       child: Drawer(
         child: ListView(
           children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: Text("Bruno Glauco Eles"),
-              accountEmail: Text("bgeles@gmail.com"),
-              currentAccountPicture: CircleAvatar(
-                backgroundImage: AssetImage("assets/images/dog1.png"),
-              ),
+            FutureBuilder<Usuario>(
+              future: future,
+              builder: (context, snapshot) {
+                Usuario user = snapshot.data;
+                return user != null ? _header(user) : Container();
+              },
             ),
             ListTile(
               leading: Icon(Icons.star),
@@ -48,6 +48,16 @@ class DrawerList extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  UserAccountsDrawerHeader _header(Usuario user) {
+    return UserAccountsDrawerHeader(
+      accountName: Text(user.nome),
+      accountEmail: Text(user.email),
+      currentAccountPicture: CircleAvatar(
+        backgroundImage: NetworkImage(user.urlFoto),
       ),
     );
   }
