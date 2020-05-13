@@ -14,7 +14,7 @@ class CarrosApi {
     //try {
 
     var url =
-        'https://carros-springboot.herokuapp.com/api/v1/carros/tipo/$tipo';
+        'https://carros-springboot.herokuapp.com/api/v2/carros/tipo/$tipo';
 
     print("GET > $url");
 
@@ -22,6 +22,8 @@ class CarrosApi {
 
     String json = response.body;
 
+    print("status code : ${response.statusCode}");
+    print(json);
     List list = convert.json.decode(json);
 
     final carros = list.map<Carro>((map) => Carro.fromJson(map)).toList();
