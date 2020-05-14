@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_carros/widgets/text.dart';
 
 import 'carro.dart';
 
@@ -51,27 +52,72 @@ class CarroPage extends StatelessWidget {
   }
 
   void _onClickPopupMenu(String value) {
-
-    switch(value){
+    switch (value) {
       case "Editar":
-      print("Editar !!!");
-      break;
+        print("Editar !!!");
+        break;
       case "Deletar":
-      print("Deletar !!!");
-      break;
+        print("Deletar !!!");
+        break;
       case "Share":
-      print("Share !!!");
-      break;
+        print("Share !!!");
+        break;
     }
-
   }
 
   _body() {
     return Container(
       padding: EdgeInsets.all(16),
-      child: Image.network(carro.urlFoto),
+      child: ListView(
+        children: <Widget>[
+          Image.network(carro.urlFoto),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  text(
+                    carro.nome,
+                    fontSize: 20,
+                    bold: true,
+                  ),
+                  text(
+                    carro.nome,
+                    fontSize: 16,
+                  ),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(
+                      Icons.favorite,
+                      color: Colors.red,
+                      size: 40,
+                    ),
+                    onPressed: _onClickFavorito(),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.share,
+                      color: Colors.black,
+                      size: 40,
+                    ),
+                    onPressed: _onClickShare(),
+                  )
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
+
+  _onClickShare() => _onClickShare;
+
+  _onClickFavorito() => _onClickFavorito;
 
   void _onClickMapa() {}
 
