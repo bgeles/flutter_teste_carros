@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -19,6 +21,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _showProgress = false;
+
+  final _streamController = StreamController<bool>();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -90,11 +94,16 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 20,
             ),
-            AppButton(
-              "Login",
-              onPressed: _onClickLogin,
-              showProgress: _showProgress,
-            ),
+            StreamBuilder<bool>(
+                stream: _streamController.stream,
+                initialData: false,
+                builder: (context, snapshot) {
+                  return AppButton(
+                    "Login",
+                    onPressed: _onClickLogin,
+                    showProgress: snapshot.data ?? false,
+                  );
+                }),
           ],
         ),
       ),
@@ -130,9 +139,7 @@ class _LoginPageState extends State<LoginPage> {
 
     print(formOK);
 
-    setState(() {
-      _showProgress = true;
-    });
+    _streamController.add(true);
 
     ApiResponse response = await LoginApi.login(login, senha);
 
@@ -147,13 +154,12 @@ class _LoginPageState extends State<LoginPage> {
       print(response.msg);
     }
 
-    setState(() {
-      _showProgress = false;
-    });
+    _streamController.add(false);
   }
 
   @override
   void dispose() {
     super.dispose();
+    _streamController.close();
   }
 }

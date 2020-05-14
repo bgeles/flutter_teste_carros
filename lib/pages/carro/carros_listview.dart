@@ -1,6 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_carros/pages/carro/carro.dart';
 import 'package:flutter_carros/pages/carro/carros_api.dart';
+import 'package:flutter_carros/pages/carro/carros_bloc.dart';
+
+import '../../utils/nav.dart';
+import 'carro_page.dart';
+import 'carros_api.dart';
 
 class CarrosListView extends StatefulWidget {
   String tipo;
@@ -12,42 +19,47 @@ class CarrosListView extends StatefulWidget {
 
 class _CarrosListViewState extends State<CarrosListView>
     with AutomaticKeepAliveClientMixin<CarrosListView> {
+  List<Carro> carros;
+
+  final _bloc = CarrosBloc();
   @override
   bool get wantKeepAlive => true;
 
   @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return _body();
+  void initState() {
+    super.initState();
+
+    _bloc.fetch(widget.tipo);
   }
 
-  _body() {
-    Future<List<Carro>> carros = CarrosApi.getCarros(widget.tipo);
-    return FutureBuilder(
-        future: carros,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasError) {
-            print(snapshot.error);
-            return Center(
-              child: Text(
-                "Não foi possível buscar os carros",
-                style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 22,
-                ),
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+
+    return StreamBuilder(
+      stream: _bloc.stream,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text(
+              "Não foi possivel buscar os carros",
+              style: TextStyle(
+                color: Colors.red,
+                fontSize: 22,
               ),
-            );
-          }
+            ),
+          );
+        }
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
 
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          List<Carro> carros = snapshot.data;
-          return _listView(carros);
-        });
+        List<Carro> carros = snapshot.data;
+        return _listView(carros);
+      },
+    );
   }
 
   Container _listView(List<Carro> carros) {
@@ -90,7 +102,7 @@ class _CarrosListViewState extends State<CarrosListView>
                       children: <Widget>[
                         FlatButton(
                           child: const Text('DETALHES'),
-                          onPressed: () {},
+                          onPressed: () => _onClickCarros(c),
                         ),
                         FlatButton(
                           child: const Text('SHARE'),
@@ -106,5 +118,15 @@ class _CarrosListViewState extends State<CarrosListView>
         },
       ),
     );
+  }
+
+  _onClickCarros(Carro c) {
+    push(context, CarroPage(c));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.dispose();
   }
 }
