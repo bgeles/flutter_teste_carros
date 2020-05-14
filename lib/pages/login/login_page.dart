@@ -13,6 +13,7 @@ import 'package:flutter_carros/widgets/app_button.dart';
 import 'package:flutter_carros/widgets/app_text.dart';
 
 import '../carro/home_page.dart';
+import 'login_bloc.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -22,7 +23,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool _showProgress = false;
 
-  final _streamController = StreamController<bool>();
+  final _bloc = LoginBloc();
+
 
   final _formKey = GlobalKey<FormState>();
 
@@ -95,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
               height: 20,
             ),
             StreamBuilder<bool>(
-                stream: _streamController.stream,
+                stream: _bloc.stream,
                 initialData: false,
                 builder: (context, snapshot) {
                   return AppButton(
@@ -139,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
 
     print(formOK);
 
-    _streamController.add(true);
+  
 
     ApiResponse response = await LoginApi.login(login, senha);
 
@@ -154,12 +156,12 @@ class _LoginPageState extends State<LoginPage> {
       print(response.msg);
     }
 
-    _streamController.add(false);
+  
   }
 
   @override
   void dispose() {
     super.dispose();
-    _streamController.close();
+    _bloc.dispose();
   }
 }
