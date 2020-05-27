@@ -6,7 +6,7 @@ Text text(
   color = Colors.black,
   bold = false,
 }) {
-  return Text(
+  return Text( 
     s ?? "",
     style: TextStyle(
       fontSize: fontSize,
