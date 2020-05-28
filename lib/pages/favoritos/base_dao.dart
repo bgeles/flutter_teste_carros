@@ -26,14 +26,7 @@ abstract class BaseDAO<T extends Entity> {
     return list.map<T>((json) => fromMap(json)).toList();
   }
 
-  Future<List<T>> findAllByTipo(String tipo) async {
-    final dbClient = await db;
-
-    final list =
-        await dbClient.rawQuery('select * from $tableName where tipo =? ', [tipo]);
-
-    return list.map<T>((json) => fromMap(json)).toList();
-  }
+  
 
   Future<T> findById(int id) async {
     var dbClient = await db;
