@@ -36,7 +36,9 @@ class _CarrosPageState extends State<CarrosPage>
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Center(
-            child: TextError("Não foi possível buscar os carros",),
+            child: TextError(
+              "Não foi possível buscar os carros",
+            ),
           );
         }
         if (!snapshot.hasData) {
@@ -46,11 +48,17 @@ class _CarrosPageState extends State<CarrosPage>
         }
 
         List<Carro> carros = snapshot.data;
-        return CarrosListView(carros);
+        return RefreshIndicator(
+          onRefresh: _onRefresh,
+          child: CarrosListView(carros),
+        );
       },
     );
   }
 
+  Future<void> _onRefresh() {
+    return _bloc.fetch(widget.tipo);
+  }
 
   @override
   void dispose() {

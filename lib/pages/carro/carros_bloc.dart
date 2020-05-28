@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'carro.dart';
 import 'carros_api.dart';
 
@@ -8,10 +7,11 @@ class CarrosBloc {
 
   get stream => _streamController.stream;
 
-  fetch(String tipo) async {
+  Future<List<Carro>> fetch(String tipo) async {
     try {
       List<Carro> carros = await CarrosApi.getCarros(tipo);
       _streamController.add(carros);
+      return carros;
     } catch (e) {
       _streamController.addError(e);
     }
