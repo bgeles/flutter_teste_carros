@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_carros/pages/carro/carro.dart';
+import 'package:flutter_carros/pages/carros/carro.dart';
 import '../../utils/nav.dart';
 import 'carro_page.dart';
 

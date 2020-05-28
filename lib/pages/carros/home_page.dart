@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_carros/drawer_list.dart';
-import 'package:flutter_carros/pages/carro/carros_api.dart';
-import 'package:flutter_carros/pages/carro/carros_page.dart';
+import 'package:flutter_carros/pages/carros/carros_api.dart';
+import 'package:flutter_carros/pages/carros/carros_page.dart';
 import 'package:flutter_carros/utils/pref.dart';
 
 class HomePage extends StatefulWidget {
