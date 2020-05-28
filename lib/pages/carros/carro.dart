@@ -1,4 +1,6 @@
-class Carro {
+import 'package:flutter_carros/pages/favoritos/entity.dart';
+
+class Carro extends Entity{
   int id;
   String nome;
   String tipo;
@@ -18,7 +20,7 @@ class Carro {
       this.latitude,
       this.longitude});
 
-  Carro.fromJson(Map<String, dynamic> json) {
+  Carro.fromMap(Map<String, dynamic> json) {
     id = json['id'];
     nome = json['nome'];
     tipo = json['tipo'];
@@ -29,7 +31,8 @@ class Carro {
     longitude = json['longitude'];
   }
 
-  Map<String, dynamic> toJson() {
+  @override
+  Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['nome'] = this.nome;

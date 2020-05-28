@@ -39,7 +39,7 @@ class CarrosApi {
 
     List list = convert.json.decode(json);
 
-    final carros = list.map<Carro>((map) => Carro.fromJson(map)).toList();
+    final carros = list.map<Carro>((map) => Carro.fromMap(map)).toList();
 
     final dao = CarroDAO();
 
