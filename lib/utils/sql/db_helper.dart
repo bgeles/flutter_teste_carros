@@ -23,7 +23,7 @@ class DatabaseHelper {
 
   Future _initDb() async {
     String databasesPath = await getDatabasesPath();
-    String path = join(databasesPath, 'carros2.db');
+    String path = join(databasesPath, 'carros.db');
     print("db $path");
 
     var db = await openDatabase(path,
@@ -34,18 +34,26 @@ class DatabaseHelper {
   void _onCreate(Database db, int newVersion) async {
     String s = await rootBundle.loadString("assets/sql/create.sql");
 
-    List<String> sqls = s.split(';');
+     List<String> sqls = s.split(';');
 
     for (String s in sqls) {
-      if (s.trim().isNotEmpty) {
-        await db.execute(s);
+      try{
+        if (s.trim().isNotEmpty) {
+        
         print('sql : $s');
+        await db.execute(s);
+      }
+      }catch (exception){
+        print('Erro ao criar tabelas $exception');
       }
     }
 
     // await db.execute(
     //     'CREATE TABLE carro(id INTEGER PRIMARY KEY, tipo TEXT, nome TEXT'
     //     ', descricao TEXT, urlFoto TEXT, urlVideo TEXT, latitude TEXT, longitude TEXT)');
+
+    //  await db.execute(
+    //     'CREATE TABLE favorito(id INTEGER PRIMARY KEY, tipo TEXT, nome TEXT)');
   }
 
   Future<FutureOr<void>> _onUpgrade(
@@ -53,7 +61,7 @@ class DatabaseHelper {
     print("_onUpgrade: oldVersion: $oldVersion > newVersion: $newVersion");
 
     if (oldVersion == 1 && newVersion == 2) {
-      //await db.execute("alter table carro add column NOVA TEXT");
+      await db.execute("alter table carro add column NOVA TEXT");
     }
   }
 
