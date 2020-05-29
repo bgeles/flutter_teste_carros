@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_carros/pages/carros/home_page.dart';
-import 'package:flutter_carros/pages/favoritos/db_helper.dart';
 import 'package:flutter_carros/pages/login/login_page.dart';
 import 'package:flutter_carros/pages/login/usuario.dart';
 import 'package:flutter_carros/utils/nav.dart';
+import 'package:flutter_carros/utils/sql/db_helper.dart';
 
 class SplashPage extends StatefulWidget {
   @override

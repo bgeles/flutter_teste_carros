@@ -1,7 +1,6 @@
 import 'dart:convert' as convert;
 
 import 'package:flutter_carros/pages/carros/carro.dart';
-import 'package:flutter_carros/pages/favoritos/carro_dao.dart';
 import 'package:http/http.dart' as http;
 
 import '../login/usuario.dart';
@@ -41,10 +40,7 @@ class CarrosApi {
 
     final carros = list.map<Carro>((map) => Carro.fromMap(map)).toList();
 
-    final dao = CarroDAO();
-
-    //Salvar todos os carros no BD
-    carros.forEach((c) => dao.save(c));
+    
 
     return carros;
 

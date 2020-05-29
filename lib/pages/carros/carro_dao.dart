@@ -1,5 +1,5 @@
 import 'package:flutter_carros/pages/carros/carro.dart';
-import 'package:flutter_carros/pages/favoritos/base_dao.dart';
+import 'package:flutter_carros/utils/sql/base_dao.dart';
 
 class CarroDAO extends BaseDAO<Carro> {
   @override

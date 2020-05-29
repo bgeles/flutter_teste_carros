@@ -1,6 +1,6 @@
-// Data Access Object
-import 'package:flutter_carros/pages/favoritos/db_helper.dart';
-import 'package:flutter_carros/pages/favoritos/entity.dart';
+
+import 'package:flutter_carros/utils/sql/db_helper.dart';
+import 'package:flutter_carros/utils/sql/entity.dart';
 import 'package:sqflite/sqflite.dart';
 
 abstract class BaseDAO<T extends Entity> {

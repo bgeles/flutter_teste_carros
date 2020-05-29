@@ -11,7 +11,7 @@ CREATE TABLE carro
     longitude TEXT
 );
 
-CREATE TABLE usuario
+CREATE TABLE favorito
 (
     id INTEGER PRIMARY KEY,
     tipo TEXT,
