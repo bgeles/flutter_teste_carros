@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_carros/drawer_list.dart';
+import 'package:flutter_carros/pages/carros/carro_form_page.dart';
 import 'package:flutter_carros/pages/carros/carros_api.dart';
 import 'package:flutter_carros/pages/carros/carros_page.dart';
 import 'package:flutter_carros/pages/favoritos/favoritos_page.dart';
+import 'package:flutter_carros/utils/alert.dart';
+import 'package:flutter_carros/utils/nav.dart';
 import 'package:flutter_carros/utils/pref.dart';
 
 class HomePage extends StatefulWidget {
@@ -78,6 +81,14 @@ class _HomePageState extends State<HomePage>
               ],
             ),
       drawer: DrawerList(),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add,color: Colors.white,),
+        onPressed: _onClickAdicionarCarro,
+      ),
     );
+  }
+
+  _onClickAdicionarCarro(){
+    push(context, CarroFormPage());
   }
 }

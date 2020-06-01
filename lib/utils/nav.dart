@@ -18,6 +18,6 @@ Future push(BuildContext context, Widget page, {bool replace = false}) {
   );
 }
 
-pop(context, {text}) {
-  Navigator.pop(context, text);
+bool pop<T extends Object>(BuildContext context, [ T result ]) {
+  Navigator.pop(context);
 }

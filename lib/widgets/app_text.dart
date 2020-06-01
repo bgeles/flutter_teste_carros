@@ -14,7 +14,7 @@ class AppText extends StatelessWidget {
   AppText(
     this.label,
     this.hint, {
-    this.obscured,
+    this.obscured = false,
     this.controller,
     this.validator,
     this.keyboardType,

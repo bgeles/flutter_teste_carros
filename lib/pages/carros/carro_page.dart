@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_carros/pages/carros/carro_form_page.dart';
 import 'package:flutter_carros/pages/carros/loripsum_api.dart';
 import 'package:flutter_carros/pages/favoritos/favorito_service.dart';
+import 'package:flutter_carros/utils/nav.dart';
 import 'package:flutter_carros/widgets/text.dart';
 
 import 'carro.dart';
@@ -83,6 +85,7 @@ class _CarroPageState extends State<CarroPage> {
     switch (value) {
       case "Editar":
         print("Editar !!!");
+        push(context, CarroFormPage(carro: carro,),);
         break;
       case "Deletar":
         print("Deletar !!!");
