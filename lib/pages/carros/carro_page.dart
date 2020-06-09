@@ -6,6 +6,9 @@ import 'package:flutter_carros/pages/carros/loripsum_api.dart';
 import 'package:flutter_carros/pages/favoritos/favorito_service.dart';
 import 'package:flutter_carros/utils/nav.dart';
 import 'package:flutter_carros/widgets/text.dart';
+import 'package:flutter_carros/pages/api_response.dart';
+import 'package:flutter_carros/pages/carros/carros_api.dart';
+import 'package:flutter_carros/utils/alert.dart';
 
 import 'carro.dart';
 
@@ -85,10 +88,16 @@ class _CarroPageState extends State<CarroPage> {
     switch (value) {
       case "Editar":
         print("Editar !!!");
-        push(context, CarroFormPage(carro: carro,),);
+        push(
+          context,
+          CarroFormPage(
+            carro: carro,
+          ),
+        );
         break;
       case "Deletar":
         print("Deletar !!!");
+        deletar();
         break;
       case "Share":
         print("Share !!!");
@@ -101,7 +110,9 @@ class _CarroPageState extends State<CarroPage> {
       padding: EdgeInsets.all(16),
       child: ListView(
         children: <Widget>[
-          CachedNetworkImage(imageUrl: widget.carro.urlFoto),
+          CachedNetworkImage(
+              imageUrl: widget.carro.urlFoto ??
+                  "http://www.livroandroid.com.br/livro/carros/esportivos/Ferrari_FF.png"),
           _bloco1(),
           Divider(),
           _bloco2(),
@@ -188,6 +199,18 @@ class _CarroPageState extends State<CarroPage> {
   void _onClickMapa() {}
 
   void _onClickVideo() {}
+
+  Future<void> deletar() async {
+    ApiResponse<bool> response = await CarrosApi.delete(carro);
+
+    if (response.ok) {
+      alert(context, "Carros deletado com sucesso", callback: () {
+        pop(context);
+      });
+    } else {
+      alert(context, response.msg);
+    }
+  }
 
   @override
   void dispose() {
