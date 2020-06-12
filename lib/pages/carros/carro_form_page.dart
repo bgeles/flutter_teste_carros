@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +10,7 @@ import 'package:flutter_carros/utils/alert.dart';
 import 'package:flutter_carros/utils/nav.dart';
 import 'package:flutter_carros/widgets/app_button.dart';
 import 'package:flutter_carros/widgets/app_text.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CarroFormPage extends StatefulWidget {
   final Carro carro;
@@ -24,6 +27,8 @@ class _CarroFormPageState extends State<CarroFormPage> {
   final tNome = TextEditingController();
   final tDesc = TextEditingController();
   final tTipo = TextEditingController();
+
+  File _file;
 
   int _radioIndex = 0;
 
@@ -116,14 +121,19 @@ class _CarroFormPageState extends State<CarroFormPage> {
   }
 
   _headerFoto() {
-    return carro != null
-        ? CachedNetworkImage(
-            imageUrl: carro.urlFoto,
-          )
-        : Image.asset(
-            "assets/images/camera.png",
-            height: 150,
-          );
+    return InkWell(
+      onTap: _onClickFoto,
+      child: _file != null
+          ? Image.file(_file,height: 150,)
+          : carro != null
+              ? CachedNetworkImage(
+                  imageUrl: carro.urlFoto,height: 150,
+                )
+              : Image.asset(
+                  "assets/images/camera.png",
+                  height: 150,
+                ),
+    );
   }
 
   _radioTipo() {
@@ -208,7 +218,7 @@ class _CarroFormPageState extends State<CarroFormPage> {
 
     print("Salvar o carro $c");
 
-    ApiResponse<bool> response = await CarrosApi.save(c);
+    ApiResponse<bool> response = await CarrosApi.save(c,_file);
 
     if (response.ok) {
       alert(context, "Carros salvo com sucesso", callback: () {
@@ -223,5 +233,15 @@ class _CarroFormPageState extends State<CarroFormPage> {
     });
 
     print("Fim.");
+  }
+
+  void _onClickFoto() async {
+    File file = await ImagePicker.pickImage(source: ImageSource.gallery);
+    if (file != null) {
+      setState(() {
+        this._file = file;
+      });
+    }
+    print('Foto!');
   }
 }
