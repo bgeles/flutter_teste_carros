@@ -4,6 +4,7 @@ import 'package:flutter_carros/pages/carros/carro_dao.dart';
 import 'package:flutter_carros/pages/favoritos/favorito.dart';
 import 'package:flutter_carros/pages/favoritos/favorito_dao.dart';
 import 'package:flutter_carros/pages/favoritos/favoritos_bloc.dart';
+import 'package:flutter_carros/pages/favoritos/favoritos_model.dart';
 import 'package:provider/provider.dart';
 
 class FavoritoService {
@@ -17,12 +18,12 @@ class FavoritoService {
     if (exists) {
       // Remove dos favoritos
       dao.delete(c.id);
-      Provider.of<FavoritosBloc>(context).fetch();
+      Provider.of<FavoritosModel>(context, listen: false).getCarros();
       print("FAVORRITOS DELETADO");
       return false;
     } else {
       dao.save(f);
-      Provider.of<FavoritosBloc>(context).fetch();
+      Provider.of<FavoritosModel>(context, listen: false).getCarros();
       print("FAVORITOS SALVO");
 
       return true;

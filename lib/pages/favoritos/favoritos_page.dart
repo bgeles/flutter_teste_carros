@@ -3,6 +3,7 @@ import 'package:flutter_carros/main.dart';
 import 'package:flutter_carros/pages/carros/carro.dart';
 import 'package:flutter_carros/pages/carros/carros_listview.dart';
 import 'package:flutter_carros/pages/favoritos/favoritos_bloc.dart';
+import 'package:flutter_carros/pages/favoritos/favoritos_model.dart';
 import 'package:flutter_carros/widgets/text_error.dart';
 import 'package:provider/provider.dart';
 
@@ -24,41 +25,33 @@ class _FavoritosPageState extends State<FavoritosPage>
   void initState() {
     super.initState();
 
-    FavoritosBloc favoritosBloc =
-        Provider.of<FavoritosBloc>(context, listen: false);
-    favoritosBloc.fetch();
+    FavoritosModel model = Provider.of<FavoritosModel>(context, listen: false);
+    model.getCarros();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
-    return StreamBuilder(
-      stream: Provider.of<FavoritosBloc>(context).stream,
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Center(
-            child: TextError(
-              "Não foi possível buscar os carros",
-            ),
-          );
-        }
-        if (!snapshot.hasData) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
+    FavoritosModel model = Provider.of<FavoritosModel>(context);
 
-        List<Carro> carros = snapshot.data;
-        return RefreshIndicator(
-          onRefresh: _onRefresh,
-          child: CarrosListView(carros),
-        );
-      },
+    List<Carro> carros = model.carros;
+
+    if (carros.isEmpty) {
+      return Center(
+        child: Text(
+          "Nenhum carro nos favoritos",
+          style: TextStyle(fontSize: 20),
+        ),
+      );
+    }
+    return RefreshIndicator(
+      onRefresh: _onRefresh,
+      child: CarrosListView(carros),
     );
   }
 
   Future<void> _onRefresh() {
-    return Provider.of<FavoritosBloc>(context).fetch();
+    return Provider.of<FavoritosModel>(context, listen: false).getCarros();
   }
 }
