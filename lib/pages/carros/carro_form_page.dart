@@ -124,10 +124,14 @@ class _CarroFormPageState extends State<CarroFormPage> {
     return InkWell(
       onTap: _onClickFoto,
       child: _file != null
-          ? Image.file(_file,height: 150,)
+          ? Image.file(
+              _file,
+              height: 150,
+            )
           : carro != null
               ? CachedNetworkImage(
-                  imageUrl: carro.urlFoto,height: 150,
+                  imageUrl: carro.urlFoto,
+                  height: 150,
                 )
               : Image.asset(
                   "assets/images/camera.png",
@@ -218,7 +222,7 @@ class _CarroFormPageState extends State<CarroFormPage> {
 
     print("Salvar o carro $c");
 
-    ApiResponse<bool> response = await CarrosApi.save(c,_file);
+    ApiResponse<bool> response = await CarrosApi.save(c, _file);
 
     if (response.ok) {
       alert(context, "Carros salvo com sucesso", callback: () {

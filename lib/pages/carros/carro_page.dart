@@ -189,7 +189,7 @@ class _CarroPageState extends State<CarroPage> {
   _onClickShare() => _onClickShare;
 
   void _onClickFavorito() async {
-    bool favorito = await FavoritoService.favoritar(carro);
+    bool favorito = await FavoritoService.favoritar(context, carro);
 
     setState(() {
       color = favorito ? Colors.red : Colors.grey;

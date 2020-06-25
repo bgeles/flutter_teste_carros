@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:convert' as convert;
 import 'dart:io';
+
 import 'package:flutter_carros/pages/api_response.dart';
-import 'package:http/http.dart';
 import 'package:flutter_carros/utils/http_helper.dart' as http;
+import 'package:http/http.dart';
 import 'package:path/path.dart' as path;
 
 class UploadApi {
@@ -27,12 +28,7 @@ class UploadApi {
       print("http.upload: " + url);
       print("params: " + json);
 
-      final response = await http
-          .post(
-            url,
-            body: json
-          )
-          .timeout(
+      final response = await http.post(url, body: json).timeout(
             Duration(seconds: 120),
             onTimeout: _onTimeOut,
           );
