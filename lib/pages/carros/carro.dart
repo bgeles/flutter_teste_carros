@@ -1,8 +1,21 @@
+import 'package:flutter_carros/utils/event_bus.dart';
 import 'package:flutter_carros/utils/sql/entity.dart';
 import 'dart:convert' as convert;
 
+class CarroEvent extends Event {
+  String acao;
 
-class Carro extends Entity{
+  String tipo;
+
+  CarroEvent(this.acao, this.tipo);
+
+  @override
+  String toString() {
+    return 'CarroEvent{acao: $acao, tipo: $tipo}';
+  }
+}
+
+class Carro extends Entity {
   int id;
   String nome;
   String tipo;
@@ -47,7 +60,7 @@ class Carro extends Entity{
     return data;
   }
 
-   String toJson() {
+  String toJson() {
     String json = convert.json.encode(toMap());
     return json;
   }

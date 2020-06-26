@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_carros/pages/carros/carro.dart';
 import 'package:flutter_carros/pages/carros/carros_bloc.dart';
 import 'package:flutter_carros/pages/carros/carros_listview.dart';
+import 'package:flutter_carros/utils/event_bus.dart';
 import 'package:flutter_carros/widgets/text_error.dart';
+import 'package:provider/provider.dart';
 
 class CarrosPage extends StatefulWidget {
   String tipo;
@@ -16,6 +20,8 @@ class _CarrosPageState extends State<CarrosPage>
     with AutomaticKeepAliveClientMixin<CarrosPage> {
   List<Carro> carros;
 
+  StreamSubscription<Event> subscription;
+
   final _bloc = CarrosBloc();
   @override
   bool get wantKeepAlive => true;
@@ -25,6 +31,16 @@ class _CarrosPageState extends State<CarrosPage>
     super.initState();
 
     _bloc.fetch(widget.tipo);
+
+    final bus = EventBus.get(context);
+    subscription = bus.stream.listen((Event e) {
+      print("Event $e");
+
+      CarroEvent carroEvent = e;
+      if (carroEvent.tipo == widget.tipo) {
+        _bloc.fetch(widget.tipo);
+      }
+    });
   }
 
   @override
@@ -64,5 +80,6 @@ class _CarrosPageState extends State<CarrosPage>
   void dispose() {
     super.dispose();
     _bloc.dispose();
+    subscription.cancel();
   }
 }
